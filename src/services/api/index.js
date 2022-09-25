@@ -7,21 +7,26 @@ const endPoints = {
     profile: `${API}/api/${VERSION}/auth/profile`,
   },
   products: {
-    getProduct: (id) => `${API}/api/${VERSION}/products/${id}`,
-    getAllProducts: () => `${API}/api/${VERSION}/products`,
-  },
-  users: {
-    users: `${API}/${VERSION}/users`,
-    isAvailable: `${API}/${VERSION}/users/is-available`,
+    getProduct: (id) => `${API}/api/${VERSION}/products/${id}/`,
+    getProducts: (limit, offset) => `${API}/api/${VERSION}/products?limit=${limit}&offset=${offset}`,
+    addProducts: `${API}/api/${VERSION}/products`,
+    updateProducts: (id) => `${API}/api/${VERSION}/products/${id}/`,
+    deleteProducts: (id) => `${API}/api/${VERSION}/products/${id}/`,
   },
   categories: {
-    getCategorie: (id) => `${API}/${VERSION}/categories/${id}`,
-    getAllCategories: () => `${API}/${VERSION}/categories`,
+    getCategoriesList: `${API}/api/${VERSION}/categories/`,
+    addCategory: `${API}/api/${VERSION}/categories/`,
+    getCategoryItems: (id) => `${API}/api/${VERSION}/categories/${id}/products/`,
+    updateCategory: (id) => `${API}/api/${VERSION}/categories/${id}`,
   },
   files: {
-    uploadFile: (fileName) => `${API}/${VERSION}/files/${fileName}`,
-    uploadFiles: () => `${API}/${VERSION}/files/upload`,
+    addImage: `${API}/api/${VERSION}/files/upload`,
+    // uploadFile: (fileName) => `${API}/api${VERSION}/files/${fileName}`,
   },
+  //   users: {
+  //     users: `${API}/api/${VERSION}/users`,
+  //     isAvailable: `${API}/api/${VERSION}/users/is-available`,
+  //   },
 };
 
 export default endPoints;
