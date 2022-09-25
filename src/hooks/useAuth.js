@@ -16,6 +16,7 @@ export const useAuth = () => {
 
 function useProvideAuth() {
   const [user, setUser] = useState(null);
+
   // con fetch:
   //   const signIn = async (email, password) => {
   //     const response = await fetch(endPoints.auth.login, {
