@@ -1,12 +1,15 @@
+import { ProviderAuth } from '@hooks/useAuth';
 import '@styles/globals.css';
 import MainLayout from '@layout/MainLayout';
 
 function MyApp({ Component, pageProps }) {
   return (
     <>
-      <MainLayout>
-        <Component {...pageProps} />
-      </MainLayout>
+      <ProviderAuth>
+        <MainLayout>
+          <Component {...pageProps} />
+        </MainLayout>
+      </ProviderAuth>
     </>
   );
 }
