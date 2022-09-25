@@ -1,4 +1,4 @@
-import React, { useState, useContext, createContext } from 'react';
+import { useState, useContext, createContext } from 'react';
 import Cookie from 'js-cookie'; //Nos ayuda asignar a nuestro navegador las cookies que esté recibiendo en el momento de la autenticación
 import axios from 'axios';
 import endPoints from '@services/api';
@@ -41,7 +41,14 @@ function useProvideAuth() {
     const { data: access_token } = await axios.post(endPoints.auth.login, { email, password }, options);
 
     if (access_token) {
-      Cookie.set('token', access_token.access_token, { expires: 5 }); //'nombre'.'verdadero_access_token'
+      const token = access_token.access_token; //'nombre'.'verdadero_access_token'
+      Cookie.set('token', token, { expires: 5 });
+
+      //api/v1/profile/profile
+      axios.defaults.headers.Authorization = ` Bearer ${token} `;
+      const { data: user } = await axios.get(endPoints.auth.profile);
+      //   console.log('user:', user);
+      setUser(user);
     }
   };
 
