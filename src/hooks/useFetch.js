@@ -14,7 +14,7 @@ const useFetch = (endpoint) => {
     } catch (error) {
       console.log(error);
     }
-  }, []);
+  }, [endpoint]);
   return data;
 };
 

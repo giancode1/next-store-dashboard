@@ -1,12 +1,18 @@
+import { useState } from 'react';
 import useFetch from '@hooks/useFetch';
 import endPoints from '@services/api';
+import Pagination from '@common/Pagination';
 
-const PRODUCT_LIMIT = 10;
-const PRODUCT_OFFSET = 10;
+const PRODUCT_LIMIT = 5;
+const PRODUCT_OFFSET = 0;
 
 export default function Dashboard() {
-  const products = useFetch(endPoints.products.getProducts(PRODUCT_LIMIT, PRODUCT_OFFSET));
-  console.log(products);
+  const [offset, setOffset] = useState(PRODUCT_OFFSET);
+
+  const products = useFetch(endPoints.products.getProducts(PRODUCT_LIMIT, offset));
+  const totalItems = useFetch(endPoints.products.getProducts(0, 0)).length; //obtiene el número total de productos en la API
+
+  // console.log(products);
 
   return (
     <>
@@ -74,6 +80,7 @@ export default function Dashboard() {
             </div>
           </div>
         </div>
+        {totalItems > 0 && <Pagination setOffset={setOffset} productNumberLimit={PRODUCT_LIMIT} totalItems={totalItems} />}
       </div>
     </>
   );
