@@ -2,6 +2,7 @@ import { useState } from 'react';
 import useFetch from '@hooks/useFetch';
 import endPoints from '@services/api';
 import Pagination from '@common/Pagination';
+import { Chart } from '@common/Chart';
 
 const PRODUCT_LIMIT = 5;
 const PRODUCT_OFFSET = 0;
@@ -14,8 +15,26 @@ export default function Dashboard() {
 
   // console.log(products);
 
+  const categoryNames = products?.map((product) => product.category);
+  const categoryCount = categoryNames?.map((category) => category.name);
+
+  const countOccurrences = (arr) => arr.reduce((prev, curr) => ((prev[curr] = ++prev[curr] || 1), prev), {});
+
+  const data = {
+    datasets: [
+      {
+        label: 'Categories',
+        // data: ['other', 'food'],
+        data: countOccurrences(categoryCount),
+        borderWidth: 2,
+        backgroundColor: ['#ffbb11', '#c0c0c0', '#50AF95', 'f3ba2f', '2#a71d0'],
+      },
+    ],
+  };
+
   return (
     <>
+      <Chart chartData={data} className="mb-8 mt-2" />
       <div className="flex flex-col">
         <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
           <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
