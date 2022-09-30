@@ -1,8 +1,10 @@
 import { Fragment, useState } from 'react';
 import { PlusIcon } from '@heroicons/react/24/solid';
 import Modal from '@common/Modal';
+import FormProduct from '@components/FormProduct';
 
 export default function products() {
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const [open, setOpen] = useState(false);
   const [products, setProducts] = useState([]);
 
@@ -91,9 +93,8 @@ export default function products() {
           </div>
         </div>
       </div>
-      {/* luego cambiaremos, esto es prueba: */}
       <Modal open={open} setOpen={setOpen}>
-        <h1>Hola Mundo</h1>
+        <FormProduct />
       </Modal>
     </>
   );
