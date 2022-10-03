@@ -2,7 +2,7 @@ import { addProduct } from '@services/api/product';
 import { useRef } from 'react';
 import { useForm } from 'react-hook-form';
 
-export default function FormProduct() {
+export default function FormProduct({ setOpen, setAlert }) {
   const {
     register,
     handleSubmit,
@@ -31,8 +31,26 @@ export default function FormProduct() {
     // data.price = parseInt(data.price);
     // data.category = parseInt(data.category);
     data.images = [data.images.item(0).name]; //porque data.images es de tipo FileList
-    console.log('customSubmit:', data);
-    addProduct(data).then(console.log).catch(console.err);
+    // console.log('customSubmit:', data);
+    // addProduct(data).then(console.log).catch(console.err);
+    addProduct(data)
+      .then(() => {
+        setAlert({
+          active: true,
+          message: 'Product added successfully',
+          type: 'success',
+          autoClose: false,
+        });
+        setOpen(false);
+      })
+      .catch((error) => {
+        setAlert({
+          active: true,
+          message: error.message,
+          type: 'error',
+          autoClose: false,
+        });
+      });
   };
 
   return (
