@@ -1,3 +1,4 @@
+import { addProduct } from '@services/api/product';
 import { useRef } from 'react';
 import { useForm } from 'react-hook-form';
 
@@ -22,15 +23,21 @@ export default function FormProduct() {
   //     images: [formData.get('images').name],
   //   };
 
-  //   console.log(data);
+  //   console.log('data:', data);
+  //   addProduct(data).then(console.log).catch(console.err);
   // };
 
   const customSubmit = (data) => {
+    // data.price = parseInt(data.price);
+    // data.category = parseInt(data.category);
+    data.images = [data.images.item(0).name]; //porque data.images es de tipo FileList
     console.log('customSubmit:', data);
+    addProduct(data).then(console.log).catch(console.err);
   };
 
   return (
     <form ref={formRef} onSubmit={handleSubmit(customSubmit)}>
+      {/* <form ref={formRef} onSubmit={handleSubmit}> */}
       <div className="overflow-hidden">
         <div className="px-4 py-5 bg-white sm:p-6">
           <div className="grid grid-cols-6 gap-6">
@@ -40,7 +47,7 @@ export default function FormProduct() {
               </label>
               <input
                 type="text"
-                {...register('title', { required: true, maxLength: 20, pattern: /^[A-Za-z]+$/i })}
+                {...register('title', { required: true, maxLength: 20, pattern: /^[A-Za-z ]+$/i })}
                 name="title"
                 id="title"
                 className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
@@ -69,7 +76,7 @@ export default function FormProduct() {
               </label>
               <select
                 id="category"
-                {...register('category', { required: true })}
+                {...register('categoryId', { required: true })}
                 name="category"
                 autoComplete="category-name"
                 className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
@@ -88,12 +95,13 @@ export default function FormProduct() {
               </label>
               <textarea
                 name="description"
-                {...register('description')}
+                {...register('description', { required: true })}
                 id="description"
                 autoComplete="description"
                 rows="3"
                 className="form-textarea mt-1 block w-full focus:ring-indigo-500 focus:border-indigo-500 shadow-sm sm:text-sm border-gray-300 rounded-md"
               />
+              {errors.title?.type === 'required' && <p className="text-red-500 text-xs italic">Description is required</p>}
             </div>
             <div className="col-span-6">
               <div>
