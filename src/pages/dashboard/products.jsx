@@ -26,14 +26,23 @@ export default function Products() {
   }, [alert]);
 
   const handleDelete = (id) => {
-    deleteProduct(id).then(() => {
-      setAlert({
-        active: true,
-        message: 'Delete product successfully',
-        type: 'error',
-        autoClose: true,
+    deleteProduct(id)
+      .then(() => {
+        setAlert({
+          active: true,
+          message: 'Delete product successfuly',
+          type: 'success',
+          autoClose: true,
+        });
+      })
+      .catch((error) => {
+        setAlert({
+          active: true,
+          message: error.message,
+          type: 'error',
+          autoClose: false,
+        });
       });
-    });
   };
 
   return (
