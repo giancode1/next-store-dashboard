@@ -1,8 +1,10 @@
 import { addProduct } from '@services/api/product';
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 
-export default function FormProduct({ setOpen, setAlert }) {
+export default function FormProduct({ setOpen, setAlert, product }) {
+  console.log(product);
+
   const {
     register,
     handleSubmit,
@@ -53,6 +55,10 @@ export default function FormProduct({ setOpen, setAlert }) {
       });
   };
 
+  useEffect(() => {
+    document.querySelector('#category').value = product?.category?.id;
+  }, [product]);
+
   return (
     <form ref={formRef} onSubmit={handleSubmit(customSubmit)}>
       {/* <form ref={formRef} onSubmit={handleSubmit}> */}
@@ -64,6 +70,7 @@ export default function FormProduct({ setOpen, setAlert }) {
                 Title
               </label>
               <input
+                defaultValue={product?.title}
                 type="text"
                 {...register('title', { required: true, maxLength: 20, pattern: /^[A-Za-z ]+$/i })}
                 name="title"
@@ -79,6 +86,7 @@ export default function FormProduct({ setOpen, setAlert }) {
                 Price
               </label>
               <input
+                defaultValue={product?.price}
                 type="number"
                 {...register('price', { required: true, min: 10, max: 1000 })}
                 name="price"
@@ -93,6 +101,7 @@ export default function FormProduct({ setOpen, setAlert }) {
                 Category
               </label>
               <select
+                defaultValue={product?.categoryId}
                 id="category"
                 {...register('categoryId', { required: true })}
                 name="category"
@@ -112,6 +121,7 @@ export default function FormProduct({ setOpen, setAlert }) {
                 Description
               </label>
               <textarea
+                defaultValue={product?.description}
                 name="description"
                 {...register('description', { required: true })}
                 id="description"
@@ -140,7 +150,7 @@ export default function FormProduct({ setOpen, setAlert }) {
                         className="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500"
                       >
                         <span>Upload a file</span>
-                        <input id="images" {...register('images')} name="images" type="file" className="sr-only" />
+                        <input defaultValue={product?.images} id="images" {...register('images')} name="images" type="file" className="sr-only" />
                       </label>
                       <p className="pl-1">or drag and drop</p>
                     </div>
