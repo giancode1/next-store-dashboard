@@ -2,6 +2,7 @@ import { useState, useContext, createContext } from 'react';
 import Cookie from 'js-cookie'; //Nos ayuda asignar a nuestro navegador las cookies que esté recibiendo en el momento de la autenticación
 import axios from 'axios';
 import endPoints from '@services/api';
+import { useRouter } from 'next/router';
 
 const AuthContext = createContext();
 
@@ -52,8 +53,17 @@ function useProvideAuth() {
     }
   };
 
+  const logout = () => {
+    Cookie.remove('token');
+    setUser(null);
+    delete axios.defaults.headers.Authorization;
+    // window.location.href = '/login';  //mejor el de abajo
+    useRouter.push('/login');
+  };
+
   return {
     user,
     sigIn,
+    logout,
   };
 }

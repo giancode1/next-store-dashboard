@@ -30,7 +30,6 @@ export default function FormProduct({ setOpen, setAlert, product }) {
             type: 'success',
             autoClose: false,
           });
-          console.log('updateProduct valio');
         })
         .catch((error) => {
           setAlert({
@@ -40,7 +39,6 @@ export default function FormProduct({ setOpen, setAlert, product }) {
             type: 'error',
             autoClose: false,
           });
-          console.log('updateProduct error');
         });
     } else {
       // * guardar producto
