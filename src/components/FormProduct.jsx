@@ -1,17 +1,19 @@
-import { addProduct } from '@services/api/product';
+import { addProduct, updateProduct } from '@services/api/product';
+import { useRouter } from 'next/router';
 import { useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 
 export default function FormProduct({ setOpen, setAlert, product }) {
-  console.log(product);
+  const router = useRouter();
 
   const {
     register,
     handleSubmit,
     formState: { errors },
+    setValue,
   } = useForm();
 
-  const formRef = useRef(null);
+  // const formRef = useRef(null);
 
   // const handleSubmit = (e) => {
   //   e.preventDefault();
@@ -32,35 +34,52 @@ export default function FormProduct({ setOpen, setAlert, product }) {
   const customSubmit = (data) => {
     // data.price = parseInt(data.price);
     // data.category = parseInt(data.category);
-    data.images = [data.images.item(0).name]; //porque data.images es de tipo FileList
     // console.log('customSubmit:', data);
     // addProduct(data).then(console.log).catch(console.err);
-    addProduct(data)
-      .then(() => {
-        setAlert({
-          active: true,
-          message: 'Product added successfully',
-          type: 'success',
-          autoClose: false,
-        });
-        setOpen(false);
-      })
-      .catch((error) => {
-        setAlert({
-          active: true,
-          message: error.message,
-          type: 'error',
-          autoClose: false,
-        });
+
+    if (data?.images?.item(0)?.name) {
+      data.images = [data?.images?.item(0)?.name]; //porque data.images es de tipo FileList
+    } else {
+      delete data.images;
+    }
+
+    if (product) {
+      updateProduct(product.id, data).then(() => {
+        router.push('/dashboard/products');
       });
+    } else {
+      addProduct(data)
+        .then(() => {
+          setAlert({
+            active: true,
+            message: 'Product added successfully',
+            type: 'success',
+            autoClose: false,
+          });
+          setOpen(false);
+        })
+        .catch((error) => {
+          setAlert({
+            active: true,
+            message: error.message,
+            type: 'error',
+            autoClose: false,
+          });
+        });
+    }
   };
 
   useEffect(() => {
+    setValue('title', product?.title);
+    setValue('price', product?.price);
+
+    setValue('category', product?.category);
+    setValue('description', product?.description);
     document.querySelector('#category').value = product?.category?.id;
   }, [product]);
 
   return (
-    <form ref={formRef} onSubmit={handleSubmit(customSubmit)}>
+    <form onSubmit={handleSubmit(customSubmit)}>
       {/* <form ref={formRef} onSubmit={handleSubmit}> */}
       <div className="overflow-hidden">
         <div className="px-4 py-5 bg-white sm:p-6">
@@ -70,9 +89,8 @@ export default function FormProduct({ setOpen, setAlert, product }) {
                 Title
               </label>
               <input
-                defaultValue={product?.title}
                 type="text"
-                {...register('title', { required: true, maxLength: 20, pattern: /^[A-Za-z ]+$/i })}
+                {...register('title', { required: true, maxLength: 30, pattern: /^[A-Z a-z ]+$/i })}
                 name="title"
                 id="title"
                 className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
@@ -86,7 +104,6 @@ export default function FormProduct({ setOpen, setAlert, product }) {
                 Price
               </label>
               <input
-                defaultValue={product?.price}
                 type="number"
                 {...register('price', { required: true, min: 10, max: 1000 })}
                 name="price"
@@ -97,13 +114,12 @@ export default function FormProduct({ setOpen, setAlert, product }) {
               {errors.price?.type === 'max' && <p className="text-red-500 text-xs italic">Price max: 1000</p>}
             </div>
             <div className="col-span-6">
-              <label htmlFor="category" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="categoryId" className="block text-sm font-medium text-gray-700">
                 Category
               </label>
               <select
-                defaultValue={product?.categoryId}
                 id="category"
-                {...register('categoryId', { required: true })}
+                {...register('category', { required: true })}
                 name="category"
                 autoComplete="category-name"
                 className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
@@ -121,7 +137,6 @@ export default function FormProduct({ setOpen, setAlert, product }) {
                 Description
               </label>
               <textarea
-                defaultValue={product?.description}
                 name="description"
                 {...register('description', { required: true })}
                 id="description"

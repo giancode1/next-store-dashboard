@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 
 export default function Nav() {
   const router = useRouter();
-  const route = router.pathname.substring(1);
+  const route = router.asPath.substring(1); //aparezca el número del producto que estamos editando.
 
   return (
     <nav className="bg-white shadow">
