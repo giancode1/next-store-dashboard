@@ -1,6 +1,6 @@
 import { addProduct, updateProduct } from '@services/api/product';
 import { useRouter } from 'next/router';
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
 export default function FormProduct({ setOpen, setAlert, product }) {
@@ -13,41 +13,42 @@ export default function FormProduct({ setOpen, setAlert, product }) {
     setValue,
   } = useForm();
 
-  // const formRef = useRef(null);
-
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-  //   const formData = new FormData(formRef.current);
-
-  //   const data = {
-  //     title: formData.get('title'),
-  //     price: parseInt(formData.get('price')),
-  //     description: formData.get('description'),
-  //     categoryId: parseInt(formData.get('category')),
-  //     images: [formData.get('images').name],
-  //   };
-
-  //   console.log('data:', data);
-  //   addProduct(data).then(console.log).catch(console.err);
-  // };
-
   const customSubmit = (data) => {
-    // data.price = parseInt(data.price);
-    // data.category = parseInt(data.category);
-    // console.log('customSubmit:', data);
-    // addProduct(data).then(console.log).catch(console.err);
-
-    if (data?.images?.item(0)?.name) {
-      data.images = [data?.images?.item(0)?.name]; //porque data.images es de tipo FileList
-    } else {
-      delete data.images;
-    }
-
+    //* editar producto
     if (product) {
-      updateProduct(product.id, data).then(() => {
-        router.push('/dashboard/products');
-      });
+      if (data?.images?.item(0)?.name) {
+        data.images = [data?.images?.item(0)?.name]; //porque data.images es de tipo FileList
+      } else {
+        delete data.images;
+      }
+      updateProduct(product.id, data)
+        .then(() => {
+          router.push('/dashboard/products');
+          setAlert({
+            active: true,
+            message: 'Product updated successfully',
+            type: 'success',
+            autoClose: false,
+          });
+          console.log('updateProduct valio');
+        })
+        .catch((error) => {
+          setAlert({
+            active: true,
+            message: error.message,
+            // message: 'An error occurred, updateProduct',
+            type: 'error',
+            autoClose: false,
+          });
+          console.log('updateProduct error');
+        });
     } else {
+      // * guardar producto
+      if (data?.images?.item(0)?.name) {
+        data.images = [data?.images?.item(0)?.name]; //porque data.images es de tipo FileList
+      } else {
+        data.images = ['noImage'];
+      }
       addProduct(data)
         .then(() => {
           setAlert({
@@ -62,6 +63,7 @@ export default function FormProduct({ setOpen, setAlert, product }) {
           setAlert({
             active: true,
             message: error.message,
+            // message: 'An error occurred, addProduct',
             type: 'error',
             autoClose: false,
           });
@@ -73,14 +75,13 @@ export default function FormProduct({ setOpen, setAlert, product }) {
     setValue('title', product?.title);
     setValue('price', product?.price);
 
-    setValue('category', product?.category);
+    // setValue('categoryId', product?.category);
     setValue('description', product?.description);
-    document.querySelector('#category').value = product?.category?.id;
+    document.querySelector('#categoryId').value = product?.category?.id;
   }, [product]);
 
   return (
     <form onSubmit={handleSubmit(customSubmit)}>
-      {/* <form ref={formRef} onSubmit={handleSubmit}> */}
       <div className="overflow-hidden">
         <div className="px-4 py-5 bg-white sm:p-6">
           <div className="grid grid-cols-6 gap-6">
@@ -118,9 +119,9 @@ export default function FormProduct({ setOpen, setAlert, product }) {
                 Category
               </label>
               <select
-                id="category"
-                {...register('category', { required: true })}
-                name="category"
+                id="categoryId"
+                {...register('categoryId', { required: true })}
+                name="categoryId"
                 autoComplete="category-name"
                 className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               >

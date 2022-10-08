@@ -3,8 +3,12 @@ import { useRouter } from 'next/router';
 import FormProduct from '@components/FormProduct';
 import endPoints from '@services/api';
 import axios from 'axios';
+import useAlert from '@hooks/useAlert';
+import Alert from '@common/Alert';
 
 export default function Edit() {
+  const [open, setOpen] = useState(false);
+  const { alert, setAlert, toggleAlert } = useAlert();
   const [product, setProduct] = useState({});
   const router = useRouter();
 
@@ -16,9 +20,13 @@ export default function Edit() {
       setProduct(response.data);
     }
     getProduct();
-    // .catch((err) => router.push('/notFound'));
-    // console.log(id);
   }, [router?.isReady]);
 
-  return <FormProduct product={product} />;
+  // return <FormProduct product={product} />;
+  return (
+    <>
+      <Alert alert={alert} handleClose={toggleAlert} />
+      <FormProduct setOpen={setOpen} setAlert={setAlert} product={product} />
+    </>
+  );
 }
