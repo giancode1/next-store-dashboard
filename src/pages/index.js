@@ -1,6 +1,8 @@
 import { Fragment } from 'react';
 import { Popover, Transition } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
+import Link from 'next/link';
+import Image from 'next/image';
 
 const navigation = [
   { name: 'Product', href: '#' },
@@ -23,16 +25,15 @@ export default function Home() {
           >
             <polygon points="50,0 100,0 50,100 0,100" />
           </svg>
-
           <Popover>
             <div className="relative px-4 pt-6 sm:px-6 lg:px-8">
               <nav className="relative flex items-center justify-between sm:h-10 lg:justify-start" aria-label="Global">
                 <div className="flex flex-shrink-0 flex-grow items-center lg:flex-grow-0">
                   <div className="flex w-full items-center justify-between md:w-auto">
-                    <a href="/login">
+                    <Image layout="fixed" width={50} height={50} className="h-8 w-auto sm:h-10" alt="Your Company" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" />
+                    <Link href="/login">
                       <span className="sr-only">Your Company</span>
-                      <img alt="Your Company" className="h-8 w-auto sm:h-10" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" />
-                    </a>
+                    </Link>
                     <div className="-mr-2 flex items-center md:hidden">
                       <Popover.Button className="inline-flex items-center justify-center rounded-md bg-white p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
                         <span className="sr-only">Open main menu</span>
@@ -47,9 +48,9 @@ export default function Home() {
                       {item.name}
                     </a>
                   ))}
-                  <a href="/login" className="font-medium text-indigo-600 hover:text-indigo-500">
-                    Log in
-                  </a>
+                  <Link href="/login">
+                    <a className="font-medium text-indigo-600 hover:text-indigo-500">Log in</a>
+                  </Link>
                 </div>
               </nav>
             </div>
@@ -83,9 +84,9 @@ export default function Home() {
                       </a>
                     ))}
                   </div>
-                  <a href="/login" className="block w-full bg-gray-50 px-5 py-3 text-center font-medium text-indigo-600 hover:bg-gray-100">
-                    Log in
-                  </a>
+                  <Link href="/login">
+                    <a className="block w-full bg-gray-50 px-5 py-3 text-center font-medium text-indigo-600 hover:bg-gray-100">Log in</a>
+                  </Link>
                 </div>
               </Popover.Panel>
             </Transition>
@@ -101,20 +102,18 @@ export default function Home() {
               </p>
               <div className="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start">
                 <div className="rounded-md shadow">
-                  <a
-                    href="/login"
-                    className="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 md:py-4 md:px-10 md:text-lg"
-                  >
-                    Get started
-                  </a>
+                  <Link href="/login">
+                    <a className="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 md:py-4 md:px-10 md:text-lg">
+                      Get started
+                    </a>
+                  </Link>
                 </div>
                 <div className="mt-3 sm:mt-0 sm:ml-3">
-                  <a
-                    href="/login"
-                    className="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-100 px-8 py-3 text-base font-medium text-indigo-700 hover:bg-indigo-200 md:py-4 md:px-10 md:text-lg"
-                  >
-                    Live demo
-                  </a>
+                  <Link href="/login">
+                    <a className="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-100 px-8 py-3 text-base font-medium text-indigo-700 hover:bg-indigo-200 md:py-4 md:px-10 md:text-lg">
+                      Live demo
+                    </a>
+                  </Link>
                 </div>
               </div>
             </div>

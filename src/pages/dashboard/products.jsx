@@ -22,7 +22,7 @@ export default function Products() {
     try {
       getProducts();
     } catch (error) {
-      console.log('error, products', error);
+      // console.log('error, products', error);
     }
   }, [alert]);
 

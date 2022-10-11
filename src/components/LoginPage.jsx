@@ -2,6 +2,7 @@ import { LockClosedIcon } from '@heroicons/react/24/solid';
 import { useRef, useState } from 'react';
 import { useAuth } from '@hooks/useAuth';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
 
 export default function LoginPage() {
   const emailRef = useRef(null);
@@ -94,9 +95,9 @@ export default function LoginPage() {
               </div>
 
               <div className="text-sm">
-                <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500">
-                  Forgot your password?
-                </a>
+                <Link href="#">
+                  <a className="font-medium text-indigo-600 hover:text-indigo-500">Forgot your password?</a>
+                </Link>
               </div>
             </div>
 
