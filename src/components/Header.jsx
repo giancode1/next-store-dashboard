@@ -8,7 +8,7 @@ import Link from 'next/link';
 const navigation = [
   { name: 'Dashboard', href: '/dashboard/', current: true },
   { name: 'Productos', href: '/dashboard/products/', current: false },
-  { name: 'Ventas', href: '#', current: false },
+  // { name: 'Ventas', href: '#', current: false },
 ];
 const userNavigation = [
   { name: 'Your Profile', href: '#' },
